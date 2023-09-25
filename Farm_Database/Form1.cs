@@ -431,10 +431,10 @@ namespace Farm_Database
             string tableName = AnimalCombo.SelectedItem.ToString(); // Replace with your UI element
 
             // Get all livestock information from the TextBoxes or input controls
-            double water = double.Parse(txtAWater.Text); // Replace with your UI element
-            double cost = double.Parse(txtACost.Text); // Replace with your UI element
-            double weight = double.Parse(txtAWeight.Text); // Replace with your UI element
-            string color = txtAColour.Text; // Replace with your UI element
+            double water = double.Parse(txtAWater.Text);
+            double cost = double.Parse(txtACost.Text); 
+            double weight = double.Parse(txtAWeight.Text); 
+            string color = txtAColour.Text; 
 
             // Generate a new unique ID based on existing IDs in the database
             int newID = GenerateUniqueID(tableName);
