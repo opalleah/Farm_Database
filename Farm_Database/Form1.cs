@@ -1,5 +1,4 @@
 using System.Data.OleDb;
-using System.Xml;
 
 namespace Farm_Database
 {
@@ -432,9 +431,9 @@ namespace Farm_Database
 
             // Get all livestock information from the TextBoxes or input controls
             double water = double.Parse(txtAWater.Text);
-            double cost = double.Parse(txtACost.Text); 
-            double weight = double.Parse(txtAWeight.Text); 
-            string color = txtAColour.Text; 
+            double cost = double.Parse(txtACost.Text);
+            double weight = double.Parse(txtAWeight.Text);
+            string color = txtAColour.Text;
 
             // Generate a new unique ID based on existing IDs in the database
             int newID = GenerateUniqueID(tableName);
