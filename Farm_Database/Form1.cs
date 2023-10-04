@@ -1,4 +1,7 @@
+using System;
 using System.Data.OleDb;
+using System.Windows.Forms;
+using Waher.Script.Constants;
 
 namespace Farm_Database
 {
@@ -16,52 +19,38 @@ namespace Farm_Database
 
             // Establish a connection to the database (replace connection string with your own)
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=FarmData.accdb;";
+
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
                 connection.Open();
 
                 // Query the database for the animal with the specified ID from all three tables
-                string query = "SELECT * FROM Cow WHERE ID = ? UNION ALL " +
-                               "SELECT * FROM Sheep WHERE ID = ? UNION ALL " +
-                               "SELECT * FROM Goat WHERE ID = ?";
+                string query = "SELECT * FROM Cow WHERE ID = ? " +
+                               "UNION ALL SELECT * FROM Sheep WHERE ID = ? " +
+                               "UNION ALL SELECT * FROM Goat WHERE ID = ?";
+
                 using (OleDbCommand command = new OleDbCommand(query, connection))
                 {
                     // Bind the ID parameter to each SELECT statement
+                    command.Parameters.AddWithValue("@ID", id);
                     command.Parameters.AddWithValue("@ID1", id);
                     command.Parameters.AddWithValue("@ID2", id);
-                    command.Parameters.AddWithValue("@ID3", id);
 
                     using (OleDbDataReader reader = command.ExecuteReader())
                     {
                         // Check if a record with the given ID exists
                         if (reader.Read())
                         {
-                            // Determine the animal type based on the table being queried
-                            string animalType = "";
-
-                            if (reader["ID"] != DBNull.Value)
-                            {
-                                // Determine the animal type based on the table name
-                                if (reader.GetName(0).Contains("Cow"))
-                                {
-                                    animalType = "Cow";
-                                }
-                                else if (reader.GetName(0).Contains("Sheep"))
-                                {
-                                    animalType = "Sheep";
-                                }
-                                else if (reader.GetName(0).Contains("Goat"))
-                                {
-                                    animalType = "Goat";
-                                }
-                            }
+                            // Determine the animal type based on the ID
+                            int animalId = (int)reader["ID"];
+                            string animalType = GetAnimalTypeFromId(animalId);
 
                             // Retrieve and display animal information
                             double water = (double)reader["Water"];
                             double cost = (double)reader["Cost"];
                             double weight = (double)reader["Weight"];
                             string colour = (string)reader["Colour"];
-                            double milk = (double)reader["Milk"];
+                            double characteristicValue = (double)reader["Milk"];
 
                             // Display the information in the TextBox
                             txtAnimalInfo.Text = $"Animal Type: {animalType}\r\n" +
@@ -69,9 +58,11 @@ namespace Farm_Database
                                                  $"Cost: {cost}\r\n" +
                                                  $"Weight: {weight}\r\n" +
                                                  $"Colour: {colour}\r\n" +
-                                                 $"Milk: {milk}";
+                                                 $"Characteristic: {characteristicValue}";
+
                             lblMessage.Text = ""; // Clear any previous messages
 
+                            // Set the label with the correct animal type
                             lblAnimalInfo.Text = $"Type: {animalType}\r\n";
                         }
                         else
@@ -81,11 +72,40 @@ namespace Farm_Database
                             lblMessage.Text = "ID doesn't exist."; // Display appropriate message
                         }
                     }
+
                 }
 
                 connection.Close();
             }
         }
+
+        private string GetTableName(OleDbDataReader reader)
+        {
+            return reader.GetName(0);
+        }
+
+        private string GetAnimalTypeFromId(int id)
+        {
+            if (id >= 1000 && id < 2000)
+            {
+                return "Cow";
+            }
+            else if (id >= 2000 && id < 3000)
+            {
+                return "Goat";
+            }
+            else if (id >= 3000 && id < 4000)
+            {
+                return "Sheep";
+            }
+
+            // Default to an empty string if the ID doesn't match expected ranges
+            return "";
+        }
+
+
+
+
 
 
         private void btn_QueryColour_Click(object sender, EventArgs e)
@@ -426,14 +446,15 @@ namespace Farm_Database
 
         private void btn_Insert_Click(object sender, EventArgs e)
         {
-            // Get the selected table name from the ComboBox or RadioButton group
-            string tableName = AnimalCombo.SelectedItem.ToString(); // Replace with your UI element
+            // Get the selected table name from the ComboBox
+            string tableName = AnimalCombo.SelectedItem.ToString();
 
             // Get all livestock information from the TextBoxes or input controls
             double water = double.Parse(txtAWater.Text);
             double cost = double.Parse(txtACost.Text);
             double weight = double.Parse(txtAWeight.Text);
             string color = txtAColour.Text;
+            double characteristicValue = double.Parse(txtACharacteristic.Text);
 
             // Generate a new unique ID based on existing IDs in the database
             int newID = GenerateUniqueID(tableName);
@@ -441,7 +462,7 @@ namespace Farm_Database
             if (newID > 0)
             {
                 // Insert the new record into the selected database table
-                InsertAnimal(tableName, newID, water, cost, weight, color);
+                InsertAnimal(tableName, newID, water, cost, weight, color, characteristicValue);
                 lblMessage.Text = "New livestock record has been added.";
             }
             else
@@ -451,7 +472,7 @@ namespace Farm_Database
         }
 
         // Method to insert the new record into the specified table
-        private void InsertAnimal(string tableName, int id, double water, double cost, double weight, string color)
+        private void InsertAnimal(string tableName, int id, double water, double cost, double weight, string color, double characteristicValue)
         {
             // Establish a connection to the database (replace connection string with your own)
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=FarmData.accdb;";
@@ -460,8 +481,9 @@ namespace Farm_Database
                 connection.Open();
 
                 // Insert the new record into the specified table
-                string query = $"INSERT INTO {tableName} (ID, Water, Cost, Weight, Colour) " +
-                               $"VALUES (?, ?, ?, ?, ?)";
+                string query = $"INSERT INTO {tableName} (ID, Water, Cost, Weight, Colour, {GetCharacteristicColumnName(tableName)}) " +
+               $"VALUES (?, ?, ?, ?, ?, ?)";
+
                 using (OleDbCommand command = new OleDbCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ID", id);
@@ -469,6 +491,7 @@ namespace Farm_Database
                     command.Parameters.AddWithValue("@Cost", cost);
                     command.Parameters.AddWithValue("@Weight", weight);
                     command.Parameters.AddWithValue("@Colour", color);
+                    command.Parameters.AddWithValue("@Characteristic", characteristicValue);
 
                     int rowsAffected = command.ExecuteNonQuery();
 
@@ -479,7 +502,8 @@ namespace Farm_Database
                                                 $"Water: {water}\r\n" +
                                                 $"Cost: {cost}\r\n" +
                                                 $"Weight: {weight}\r\n" +
-                                                $"Colour: {color}";
+                                                $"Colour: {color}\r\n" +
+                                                $"Characteristic: {characteristicValue}";
                         txtAnimalInfo.Text = "New livestock record added:\r\n" + insertedRecord;
                         lblMessage.Text = "Record successfully inserted.";
                     }
@@ -493,37 +517,93 @@ namespace Farm_Database
                 connection.Close();
             }
         }
+        // Method to get the characteristic column name based on the animal type
+        private string GetCharacteristicColumnName(string tableName)
+        {
+            if (tableName.Contains("Cow") || tableName.Contains("Goat"))
+            {
+                return "Milk";
+            }
+            else if (tableName.Contains("Sheep"))
+            {
+                return "Wool";
+            }
+
+            // Handle the case where the animal type is unknown
+            throw new InvalidOperationException("Unknown animal type");
+        }
 
 
+        // Method to check if an ID is already used in the specified table
+        private bool IsIDUsed(int id, string tableName)
+        {
+            try
+            {
+                // Establish a connection to the database (replace connection string with your own)
+                string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=FarmData.accdb;";
+
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Execute the query to check if the ID exists in the table
+                    string query = $"SELECT COUNT(*) FROM {tableName} WHERE ID = {id}";
+
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        int count = (int)command.ExecuteScalar();
+                        return count > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log, display an error message, etc.)
+                Console.WriteLine($"Error checking if ID is used: {ex.Message}");
+                return false; // For simplicity, return false in case of an exception
+            }
+        }
+
+
+
+        // Method to find the nearest unused ID in a given range
+        private int FindNearestUnusedID(int baseID, int maxID, string tableName)
+        {
+            for (int i = baseID; i <= maxID + 1; i++)
+            {
+                // Check if the ID is already used in the specified table
+                if (!IsIDUsed(i, tableName))
+                {
+                    return i;
+                }
+            }
+
+            // This should not happen in normal circumstances, handle it as needed
+            throw new Exception("Unable to find a unique ID.");
+        }
 
 
         // Method to generate a new unique ID based on existing IDs in the specified table
         private int GenerateUniqueID(string tableName)
         {
-            int newID = 1; // Initialize with a default value
+            int baseID = 0;
 
-            // Establish a connection to the database (replace connection string with your own)
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=FarmData.accdb;";
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            // Determine the base ID based on the type of animal
+            if (tableName.Contains("Cow"))
             {
-                connection.Open();
-
-                // Query the maximum ID value from the specified table
-                string query = $"SELECT MAX(ID) FROM {tableName}";
-                using (OleDbCommand command = new OleDbCommand(query, connection))
-                {
-                    object result = command.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                    {
-                        // If there are existing records, increment the maximum ID value
-                        newID = Convert.ToInt32(result) + 1;
-
-                    }
-                }
-
-                connection.Close();
+                baseID = 1000;
+            }
+            else if (tableName.Contains("Goat"))
+            {
+                baseID = 2000;
+            }
+            else if (tableName.Contains("Sheep"))
+            {
+                baseID = 3000;
             }
 
+            // Use the baseID in the loop to find the nearest unused ID
+            int newID = FindNearestUnusedID(baseID, baseID + 999, tableName);
             return newID;
         }
 
@@ -531,20 +611,22 @@ namespace Farm_Database
         {
             // Get the ID, selected attribute, and new value from the UI elements
             int id = int.Parse(textBox1.Text);
-            string attributeName = InsertCombo.SelectedItem.ToString();
-            double newValue = double.Parse(textBox2.Text);
+            string attributeName = InsertCombo.SelectedItem as string;
 
-            // Determine the table name based on the selected attribute
+            // Determine the table name and column name based on the selected attribute
             string tableName = GetTableNameFromAttributeName(attributeName);
+            string columnName = GetColumnNameFromAttributeName(attributeName);
 
-            if (tableName == null)
+            if (tableName == null || columnName == null)
             {
                 lblMessage.Text = "Invalid attribute.";
                 return;
             }
 
+            double newValue = double.Parse(textBox2.Text);
+
             // Construct the SQL update query
-            string query = $"UPDATE {tableName} SET {attributeName} = ? WHERE ID = ?";
+            string query = $"UPDATE {tableName} SET {columnName} = ? WHERE ID = ?";
 
             // Connect to the database and execute the update query
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=FarmData.accdb";
@@ -575,6 +657,30 @@ namespace Farm_Database
                 connection.Close();
             }
         }
+
+        // Method to get the column name based on the attribute name
+        private string GetColumnNameFromAttributeName(string attributeName)
+        {
+            switch (attributeName)
+            {
+                case "Water":
+                    return "Water";
+                case "Weight":
+                    return "Weight";
+                case "Colour":
+                    return "Colour";
+                case "Cost":
+                    return "Cost";
+                case "Produce":
+                    // Determine the characteristic column based on the animal type
+                    string tableName = GetTableNameFromAttributeName(attributeName);
+                    return GetCharacteristicColumnName(tableName);
+                default:
+                    return null; // Invalid attribute
+            }
+        }
+
+        // Method to get the table name from the attribute name
         private string GetTableNameFromAttributeName(string attributeName)
         {
             switch (attributeName)
@@ -589,5 +695,7 @@ namespace Farm_Database
                     return null; // Invalid attribute
             }
         }
+
     }
 }
+
