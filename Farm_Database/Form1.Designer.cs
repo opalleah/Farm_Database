@@ -303,7 +303,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.BackColor = Color.FromArgb(192, 192, 255);
+            label6.BackColor = Color.LightBlue;
             label6.Location = new Point(29, 412);
             label6.Name = "label6";
             label6.Size = new Size(103, 25);
@@ -426,7 +426,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.BackColor = Color.FromArgb(192, 192, 255);
+            label14.BackColor = Color.LightBlue;
             label14.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label14.Location = new Point(29, 649);
             label14.Name = "label14";
@@ -437,7 +437,7 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.BackColor = Color.FromArgb(192, 192, 255);
+            label15.BackColor = Color.LightBlue;
             label15.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label15.Location = new Point(29, 344);
             label15.Name = "label15";
@@ -448,7 +448,7 @@
             // label16
             // 
             label16.AutoSize = true;
-            label16.BackColor = Color.FromArgb(192, 192, 255);
+            label16.BackColor = Color.LightBlue;
             label16.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label16.Location = new Point(27, 68);
             label16.Name = "label16";
@@ -459,7 +459,7 @@
             // label17
             // 
             label17.AutoSize = true;
-            label17.BackColor = Color.FromArgb(192, 192, 255);
+            label17.BackColor = Color.LightBlue;
             label17.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label17.Location = new Point(29, 12);
             label17.Name = "label17";
@@ -469,7 +469,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(192, 192, 255);
+            panel1.BackColor = Color.LightBlue;
             panel1.BackgroundImageLayout = ImageLayout.None;
             panel1.Controls.Add(label15);
             panel1.Controls.Add(InsertCombo);
@@ -511,7 +511,7 @@
             // 
             // panel2
             // 
-            panel2.BackColor = Color.FromArgb(192, 192, 255);
+            panel2.BackColor = Color.LightBlue;
             panel2.Controls.Add(txtDeleteID);
             panel2.Controls.Add(label5);
             panel2.Controls.Add(label16);
