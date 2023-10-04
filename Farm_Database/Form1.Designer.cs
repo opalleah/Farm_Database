@@ -125,7 +125,7 @@
             // 
             txtAnimalInfo.Location = new Point(593, 132);
             txtAnimalInfo.Name = "txtAnimalInfo";
-            txtAnimalInfo.Size = new Size(695, 328);
+            txtAnimalInfo.Size = new Size(382, 328);
             txtAnimalInfo.TabIndex = 6;
             txtAnimalInfo.Text = "";
             // 
@@ -219,7 +219,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(29, 396);
+            label5.Location = new Point(27, 137);
             label5.Name = "label5";
             label5.Size = new Size(114, 25);
             label5.TabIndex = 17;
@@ -227,14 +227,14 @@
             // 
             // txtDeleteID
             // 
-            txtDeleteID.Location = new Point(181, 396);
+            txtDeleteID.Location = new Point(179, 137);
             txtDeleteID.Name = "txtDeleteID";
             txtDeleteID.Size = new Size(150, 31);
             txtDeleteID.TabIndex = 18;
             // 
             // btn_Delete
             // 
-            btn_Delete.Location = new Point(181, 506);
+            btn_Delete.Location = new Point(179, 241);
             btn_Delete.Name = "btn_Delete";
             btn_Delete.Size = new Size(112, 34);
             btn_Delete.TabIndex = 19;
@@ -245,7 +245,7 @@
             // radioConfirmDeletion
             // 
             radioConfirmDeletion.AutoSize = true;
-            radioConfirmDeletion.Location = new Point(181, 455);
+            radioConfirmDeletion.Location = new Point(179, 190);
             radioConfirmDeletion.Name = "radioConfirmDeletion";
             radioConfirmDeletion.Size = new Size(145, 29);
             radioConfirmDeletion.TabIndex = 20;
@@ -303,8 +303,8 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.BackColor = SystemColors.ButtonShadow;
-            label6.Location = new Point(35, 95);
+            label6.BackColor = Color.FromArgb(192, 192, 255);
+            label6.Location = new Point(29, 412);
             label6.Name = "label6";
             label6.Size = new Size(103, 25);
             label6.TabIndex = 27;
@@ -312,21 +312,21 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(212, 95);
+            textBox1.Location = new Point(244, 406);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(150, 31);
             textBox1.TabIndex = 28;
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(750, 778);
+            textBox2.Location = new Point(244, 461);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(150, 31);
             textBox2.TabIndex = 29;
             // 
             // btn_Update
             // 
-            btn_Update.Location = new Point(250, 202);
+            btn_Update.Location = new Point(244, 516);
             btn_Update.Name = "btn_Update";
             btn_Update.Size = new Size(112, 34);
             btn_Update.TabIndex = 32;
@@ -391,7 +391,7 @@
             // 
             InsertCombo.FormattingEnabled = true;
             InsertCombo.Items.AddRange(new object[] { "Water", "Weight", "Colour", "Cost", "Produce" });
-            InsertCombo.Location = new Point(553, 776);
+            InsertCombo.Location = new Point(29, 459);
             InsertCombo.Name = "InsertCombo";
             InsertCombo.Size = new Size(182, 33);
             InsertCombo.TabIndex = 42;
@@ -415,79 +415,81 @@
             // Output
             // 
             Output.AutoSize = true;
-            Output.BackColor = SystemColors.Control;
-            Output.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            Output.Location = new Point(720, 31);
+            Output.BackColor = SystemColors.HighlightText;
+            Output.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            Output.Location = new Point(593, 24);
             Output.Name = "Output";
-            Output.Size = new Size(90, 32);
+            Output.Size = new Size(95, 32);
             Output.TabIndex = 46;
             Output.Text = "Output";
             // 
             // label14
             // 
             label14.AutoSize = true;
-            label14.BackColor = SystemColors.Control;
-            label14.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label14.BackColor = Color.FromArgb(192, 192, 255);
+            label14.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label14.Location = new Point(29, 649);
             label14.Name = "label14";
-            label14.Size = new Size(208, 32);
+            label14.Size = new Size(226, 32);
             label14.TabIndex = 47;
             label14.Text = "Insert New Record";
             // 
             // label15
             // 
             label15.AutoSize = true;
-            label15.BackColor = SystemColors.Control;
-            label15.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label15.Location = new Point(35, 30);
+            label15.BackColor = Color.FromArgb(192, 192, 255);
+            label15.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label15.Location = new Point(29, 344);
             label15.Name = "label15";
-            label15.Size = new Size(259, 32);
+            label15.Size = new Size(280, 32);
             label15.TabIndex = 48;
             label15.Text = "Update Existing Record";
             // 
             // label16
             // 
             label16.AutoSize = true;
-            label16.BackColor = SystemColors.Control;
-            label16.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label16.Location = new Point(29, 327);
+            label16.BackColor = Color.FromArgb(192, 192, 255);
+            label16.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label16.Location = new Point(27, 68);
             label16.Name = "label16";
-            label16.Size = new Size(164, 32);
+            label16.Size = new Size(174, 32);
             label16.TabIndex = 49;
             label16.Text = "Delete Record";
             // 
             // label17
             // 
             label17.AutoSize = true;
-            label17.BackColor = SystemColors.Control;
-            label17.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label17.BackColor = Color.FromArgb(192, 192, 255);
+            label17.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label17.Location = new Point(29, 12);
             label17.Name = "label17";
-            label17.Size = new Size(175, 32);
+            label17.Size = new Size(187, 32);
             label17.TabIndex = 50;
             label17.Text = "Search Records";
             // 
             // panel1
             // 
-            panel1.BackColor = SystemColors.ButtonShadow;
+            panel1.BackColor = Color.FromArgb(192, 192, 255);
             panel1.BackgroundImageLayout = ImageLayout.None;
-            panel1.Controls.Add(label16);
+            panel1.Controls.Add(label15);
+            panel1.Controls.Add(InsertCombo);
+            panel1.Controls.Add(label6);
             panel1.Controls.Add(label14);
+            panel1.Controls.Add(textBox1);
             panel1.Controls.Add(txtACharacteristic);
+            panel1.Controls.Add(textBox2);
             panel1.Controls.Add(label13);
+            panel1.Controls.Add(btn_Update);
             panel1.Controls.Add(label17);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(btn_QueryWeight);
-            panel1.Controls.Add(btn_Delete);
             panel1.Controls.Add(btn_QueryType);
             panel1.Controls.Add(txtWeight);
             panel1.Controls.Add(btn_QueryColour);
-            panel1.Controls.Add(radioConfirmDeletion);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(txtType);
-            panel1.Controls.Add(txtDeleteID);
             panel1.Controls.Add(label3);
             panel1.Controls.Add(btn_QueryId);
             panel1.Controls.Add(txtColour);
@@ -495,7 +497,6 @@
             panel1.Controls.Add(label10);
             panel1.Controls.Add(AnimalCombo);
             panel1.Controls.Add(label2);
-            panel1.Controls.Add(label5);
             panel1.Controls.Add(txtACost);
             panel1.Controls.Add(txtID);
             panel1.Controls.Add(btn_Insert);
@@ -510,26 +511,26 @@
             // 
             // panel2
             // 
-            panel2.BackColor = SystemColors.ButtonShadow;
-            panel2.Controls.Add(label15);
-            panel2.Controls.Add(label6);
-            panel2.Controls.Add(textBox1);
-            panel2.Controls.Add(btn_Update);
+            panel2.BackColor = Color.FromArgb(192, 192, 255);
+            panel2.Controls.Add(txtDeleteID);
+            panel2.Controls.Add(label5);
+            panel2.Controls.Add(label16);
+            panel2.Controls.Add(btn_Delete);
+            panel2.Controls.Add(radioConfirmDeletion);
             panel2.Location = new Point(538, 631);
             panel2.Name = "panel2";
-            panel2.Size = new Size(775, 443);
+            panel2.Size = new Size(464, 443);
             panel2.TabIndex = 52;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ButtonHighlight;
             BackgroundImageLayout = ImageLayout.None;
-            ClientSize = new Size(1325, 1086);
+            ClientSize = new Size(1013, 1086);
             Controls.Add(Output);
-            Controls.Add(InsertCombo);
             Controls.Add(label12);
-            Controls.Add(textBox2);
             Controls.Add(lblMessage);
             Controls.Add(txtAnimalInfo);
             Controls.Add(lblAnimalInfo);
