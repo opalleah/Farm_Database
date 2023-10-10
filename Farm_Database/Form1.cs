@@ -11,7 +11,8 @@ namespace Farm_Database
         {
             InitializeComponent();
         }
-
+        private OleDbConnection connection;
+        
         private void btn_QueryId_Click(object sender, EventArgs e)
         {
             // Get the entered ID from the TextBox
@@ -79,11 +80,6 @@ namespace Farm_Database
             }
         }
 
-        private string GetTableName(OleDbDataReader reader)
-        {
-            return reader.GetName(0);
-        }
-
         private string GetAnimalTypeFromId(int id)
         {
             if (id >= 1000 && id < 2000)
@@ -102,10 +98,6 @@ namespace Farm_Database
             // Default to an empty string if the ID doesn't match expected ranges
             return "";
         }
-
-
-
-
 
 
         private void btn_QueryColour_Click(object sender, EventArgs e)
@@ -151,9 +143,10 @@ namespace Farm_Database
                                     double water = (double)reader["Water"];
                                     double cost = (double)reader["Cost"];
                                     double milk = (double)reader["Milk"];
+                                    double weight = (double)reader["Weight"];
 
                                     // Calculate tax and profitability for each animal and update totals
-                                    double taxPerAnimal = water * 0.02; // Example tax calculation
+                                    double taxPerAnimal = weight * 0.02; // Example tax calculation
                                     double profitLossPerAnimal = milk - cost; // Example profit/loss calculation
 
                                     totalTax += taxPerAnimal;
@@ -274,7 +267,10 @@ namespace Farm_Database
                             }
 
                             waterPerAnimal = (double)reader["Water"];
-                            double taxPerAnimal = waterPerAnimal * 0.02; // Example tax calculation
+                            double weight = (double)reader["Weight"];
+
+                            // Calculate tax based on weight (replace 0.02 with your actual tax rate)
+                            double taxPerAnimal = weight * 0.02;
 
                             // Update the totals
                             totalProducePerDay += producePerAnimal;
@@ -307,9 +303,12 @@ namespace Farm_Database
                 return;
             }
 
+            // Declare the tableName variable
+            string tableName = "";
+
             // Establish a connection to the database (replace connection string with your own)
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=FarmData.accdb;";
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (connection = new OleDbConnection(connectionString))
             {
                 connection.Open();
 
@@ -336,17 +335,41 @@ namespace Farm_Database
                             // Retrieve relevant data for calculation
                             double weight = (double)reader["Weight"];
                             double cost = (double)reader["Cost"];
-                            double milk = (double)reader["Milk"];
+                            double water = (double)reader["Water"];
+                            double producePerAnimal = (double)reader["Milk"];
 
-                            // Calculate cost, profit/loss for each animal, and update totals
-                            double costPerDay = cost; // Example cost calculation
-                            double profitLossPerDay = milk - cost; // Example profit/loss calculation
+     
 
+                            if (tableName == "Cow" || tableName == "Goat")
+                            {
+                                producePerAnimal = (double)reader["Milk"];
+                            }
+                            else if (tableName == "Sheep")
+                            {
+                                producePerAnimal = (double)reader["Wool"];
+                            }
+
+                            // Calculate tax based on weight
+                            double taxPerAnimal = weight * 0.02;
+                            double waterPrice = water * 1.4;
+
+                            // Calculate total cost for each animal
+                            double totalCostPerAnimal = waterPrice + cost + taxPerAnimal;
+
+                            // Hardcoded product costs
+                            double productCost = (tableName == "Cow") ? 3.4 : ((tableName == "Goat") ? 4.55 : 3.2);
+
+                            // Calculate profit/loss for each animal
+                            double profitLossPerAnimal = (producePerAnimal * productCost) - totalCostPerAnimal;
+
+
+                            // Update the totals
                             totalWeight += weight;
-                            totalCostPerDay += costPerDay;
-                            totalProfitLossPerDay += profitLossPerDay;
+                            totalCostPerDay += totalCostPerAnimal;
+                            totalProfitLossPerDay += profitLossPerAnimal;
                             numberOfAnimalsAboveThreshold++;
                         }
+
                     }
                 }
 
@@ -371,6 +394,30 @@ namespace Farm_Database
                 connection.Close();
             }
         }
+
+        private double GetProductCostFromCommodityTable(string animalType, string productType)
+        {
+            // Hardcoded values
+            double goatMilkCost = 4.55;
+            double cowMilkCost = 3.4;
+            double sheepWoolCost = 3.2;
+
+            // Use a switch statement to determine the product cost based on the product type
+            switch (productType)
+            {
+                case "Milk":
+                    return (animalType == "Goat") ? goatMilkCost : cowMilkCost;
+                case "Wool":
+                    return sheepWoolCost;
+                default:
+                    return 0.0; // Default to 0 for unknown product types
+            }
+        }
+
+
+
+
+
 
         private void btn_Delete_Click(object sender, EventArgs e)
         {
